@@ -1,5 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'idea'
+apply plugin: 'application'
+
+mainClassName = 'org.jneis.hack.hystrix.HelloWorld'
 
 repositories {
     mavenCentral()
@@ -7,5 +10,8 @@ repositories {
 
 dependencies {
     compile 'com.netflix.hystrix:hystrix-core:1.5.2'
+//    compile 'org.slf4j:slf4j-api:1.7.16'
+    compile 'org.slf4j:slf4j-log4j12:1.7.16'
+//    compile 'log4j:log4j:1.2.17'
 }
 
