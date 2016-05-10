@@ -14,6 +14,12 @@ public class HelloWorldCommand extends HystrixCommand<String> {
 
     @Override
     protected String run() throws Exception {
-        return "Hello, " + name;
+        throw new RuntimeException("failed");
+//        return "Hello, " + name;
+    }
+
+    @Override
+    protected String getFallback() {
+        return "Hello failure " + name;
     }
 }

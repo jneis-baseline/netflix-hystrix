@@ -24,7 +24,8 @@ public class HelloWorldObservableCommand extends HystrixObservableCommand<String
                     if (!subscriber.isUnsubscribed()) {
                         subscriber.onNext("Hello, ");
                         subscriber.onNext(name);
-                        subscriber.onCompleted();
+                        throw new RuntimeException("failed observable");
+//                        subscriber.onCompleted();
                     }
                 } catch (Exception e) {
                     subscriber.onError(e);
@@ -33,4 +34,20 @@ public class HelloWorldObservableCommand extends HystrixObservableCommand<String
         });
     }
 
+    @Override
+    protected Observable<String> resumeWithFallback() {
+        return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                try {
+                    if (!subscriber.isUnsubscribed()) {
+                        subscriber.onNext("async fallback " + name);
+                        subscriber.onCompleted();
+                    }
+                } catch (Exception e) {
+                    subscriber.onError(e);
+                }
+            }
+        });
+    }
 }
