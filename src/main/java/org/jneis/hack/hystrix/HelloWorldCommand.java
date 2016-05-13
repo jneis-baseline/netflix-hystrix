@@ -19,12 +19,18 @@ public class HelloWorldCommand extends HystrixCommand<String> {
 
     @Override
     protected String run() throws Exception {
-        throw new RuntimeException("failed");
-//        return "Hello, " + name;
+//        throw new RuntimeException("failed");
+        return "Hello, " + name;
     }
 
     @Override
     protected String getFallback() {
         return "Hello failure " + name;
     }
+
+    @Override
+    protected String getCacheKey() {
+        return String.valueOf(name.hashCode());
+    }
+
 }

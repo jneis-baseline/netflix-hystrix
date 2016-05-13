@@ -23,8 +23,8 @@ public class HelloWorldObservableCommand extends HystrixObservableCommand<String
                     if (!subscriber.isUnsubscribed()) {
                         subscriber.onNext("Hello, ");
                         subscriber.onNext(name);
-                        throw new RuntimeException("failed observable");
-//                        subscriber.onCompleted();
+//                        throw new RuntimeException("failed observable");
+                        subscriber.onCompleted();
                     }
                 } catch (Exception e) {
                     subscriber.onError(e);

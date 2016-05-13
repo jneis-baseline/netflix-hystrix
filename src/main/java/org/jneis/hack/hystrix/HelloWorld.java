@@ -2,6 +2,7 @@ package org.jneis.hack.hystrix;
 
 import com.netflix.hystrix.HystrixCommand;
 import com.netflix.hystrix.HystrixObservableCommand;
+import com.netflix.hystrix.strategy.concurrency.HystrixRequestContext;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import rx.Observable;
@@ -11,6 +12,8 @@ import rx.functions.Action1;
 public class HelloWorld {
 
     public static void main(String... args) throws ExecutionException, InterruptedException {
+        HystrixRequestContext context = HystrixRequestContext.initializeContext();
+
         HystrixCommand<String> command = new HelloWorldCommand("Hystrix");
         HystrixCommand<String> command2 = new HelloWorldCommand("Hystrix");
 
@@ -22,6 +25,8 @@ public class HelloWorld {
         Observable<String> hotObservable = observableCommand.observe();
         Observable<String> coldObservable = observableCommand2.toObservable();
 
+        System.out.println(command.isResponseFromCache());
+        System.out.println(command2.isResponseFromCache());
         System.out.println(value);
 
         // non-blocking, ignore errors and completed signals
@@ -48,6 +53,7 @@ public class HelloWorld {
             }
         });
 
+        context.shutdown();
     }
 
 }
